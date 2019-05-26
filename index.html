@@ -8,15 +8,54 @@
 </head>
 <body>
   <div id="app">
-    {{ message }}
+    <div v-bind:title="message">
+      {{ message }}
+      <p v-if="isShow"> {{ hideMessage }} : {{ inputText }} </p>
+      <p>
+        <input type="button" value="押してみな" v-on:click="handleShow" />
+      </p>
+    </div>
+    <input type="text" v-model="inputText">
+    <p>{{ inputText }}</p>
+    <ol>
+      <li v-for="t in 10">
+        {{ t }}
+      </li>
+    </ol>
+    <ol>
+      <todo-item
+        v-for="grocery in groceryList"
+        v-bind:grocery="grocery"
+        v-bind:key="grocery.id"
+      />
+    </ol>
   </div>
   <script type="module">
     import Vue from 'https://cdn.jsdelivr.net/npm/vue@2.6.10/dist/vue.esm.browser.js'
+
+    Vue.component('todo-item', {
+      props: ['grocery'],
+      template: '<li>{{ grocery.text }}</li>'
+    })
+
     var app = new Vue({
       el: '#app',
       data: {
-        message: 'Hello Vue!'
-      }
+        message: 'You loaded this page on ' + new Date().toLocaleString(),
+        hideMessage: 'Fack you',
+        isShow: false,
+        inputText: "Hoge",
+        groceryList: [
+          { id: 0, text: 'Vegetables' },
+          { id: 1, text: 'Cheese' },
+          { id: 2, text: 'Whatever else humans are supposed to eat' }
+        ],
+      },
+      methods: {
+        handleShow: function() {
+          this.isShow = true;
+        },
+      },
     })
   </script>
 </body>
